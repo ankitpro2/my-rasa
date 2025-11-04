@@ -7,8 +7,7 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-import subprocess
-import time
+import os
 
 
 class ActionSearchGoogleFood(Action):
@@ -28,9 +27,10 @@ class ActionSearchGoogleFood(Action):
             # Create a function to search Google
             def search_google():
                 with sync_playwright() as p:
-                    # Launch browser in headless mode by default
-                    # Set headless=False if you want to see the browser
-                    browser = p.chromium.launch(headless=False)
+                    # Launch browser - use environment variable to control headless mode
+                    # Set BROWSER_HEADLESS=false to see the browser (for debugging)
+                    headless = os.getenv('BROWSER_HEADLESS', 'true').lower() == 'true'
+                    browser = p.chromium.launch(headless=headless)
                     page = browser.new_page()
                     
                     # Navigate to Google

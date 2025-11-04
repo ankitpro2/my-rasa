@@ -94,8 +94,14 @@ A test story validates the conversation flow.
 
 ### Browser Configuration
 - **Browser:** Chromium (via Playwright)
-- **Mode:** Non-headless by default (set `headless=False` to see the browser)
+- **Mode:** Headless by default (set environment variable `BROWSER_HEADLESS=false` to see the browser)
 - **Screenshot:** Saved to `/tmp/google_search_results.png`
+
+To run with visible browser (for debugging):
+```bash
+export BROWSER_HEADLESS=false
+rasa run actions
+```
 
 ### Error Handling
 The action includes error handling for:
@@ -113,7 +119,7 @@ The search runs in a separate thread to prevent blocking the Rasa conversation l
 **Solution:** Run `pip install playwright && playwright install chromium`
 
 ### Issue: Browser doesn't open
-**Solution:** Ensure you have a graphical environment or set `headless=True` in the action code
+**Solution:** The browser runs in headless mode by default. If you want to see the browser, set `export BROWSER_HEADLESS=false` before starting the action server
 
 ### Issue: Google blocked
 **Solution:** Some networks may block automated access to Google. Try using a VPN or different network.
