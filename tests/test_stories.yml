@@ -89,3 +89,12 @@ stories:
       are you a bot?
     intent: bot_challenge
   - action: utter_iamabot
+
+- story: search for nice food
+  steps:
+  - user: |
+      search for nice things to eat
+    intent: search_nice_food
+  - action: utter_search_started
+  - action: action_search_google_food
+  - action: utter_search_complete

@@ -17,8 +17,6 @@ nlu:
     - goodevening
     - good afternoon
 
-<<<<<<< HEAD
-=======
 - intent: inquire_order_status
   examples: |
     - What's the status of my order?
@@ -31,7 +29,6 @@ nlu:
     - Put this in my cart
     - I want to buy this product
 
->>>>>>> cf5e002b1e471428dbe5e05be6bdd3627c470afb
 - intent: goodbye
   examples: |
     - cu
@@ -64,20 +61,16 @@ nlu:
     - no way
     - not really
 
-<<<<<<< HEAD
-- intent: inquire_order_status
+- intent: search_nice_food
   examples: |
-    - What's the status of my order?
-    - Where is my order?
-    - Can you check on my order?
-
-- intent: add_to_cart
-  examples: |
-    - Add this item to my cart
-    - Put this in my cart
-    - I want to buy this product
-=======
->>>>>>> cf5e002b1e471428dbe5e05be6bdd3627c470afb
+    - search for nice things to eat
+    - find nice food
+    - look for good food
+    - search nice things to eat on google
+    - open google and search for nice food
+    - can you search for nice things to eat?
+    - find me nice things to eat
+    - search google for nice food
 
 - intent: bot_challenge
   examples: |

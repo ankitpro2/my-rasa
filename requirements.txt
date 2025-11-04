@@ -160,3 +160,4 @@ Werkzeug==2.3.7
 wrapt==1.14.1
 yarl==1.9.2
 zipp==3.16.2
+playwright==1.40.0
