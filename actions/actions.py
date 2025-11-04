@@ -22,49 +22,49 @@ class ActionSearchGoogleFood(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         try:
-            # Create a Python script that uses playwright to open Google and search
-            script_content = """
-from playwright.sync_api import sync_playwright
-import time
-
-def search_google():
-    with sync_playwright() as p:
-        # Launch browser
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
-        
-        # Navigate to Google
-        page.goto("https://www.google.com")
-        time.sleep(2)
-        
-        # Search for "nice things to eat"
-        search_box = page.locator('textarea[name="q"], input[name="q"]').first
-        search_box.fill("nice things to eat")
-        search_box.press("Enter")
-        
-        # Wait for results to load
-        time.sleep(3)
-        
-        # Keep browser open for a few more seconds
-        time.sleep(5)
-        
-        browser.close()
-
-if __name__ == "__main__":
-    search_google()
-"""
+            # Import playwright inside the method to avoid import errors if not installed
+            from playwright.sync_api import sync_playwright
             
-            # Write the script to a temporary file
-            with open('/tmp/google_search.py', 'w') as f:
-                f.write(script_content)
+            # Create a function to search Google
+            def search_google():
+                with sync_playwright() as p:
+                    # Launch browser in headless mode by default
+                    # Set headless=False if you want to see the browser
+                    browser = p.chromium.launch(headless=False)
+                    page = browser.new_page()
+                    
+                    # Navigate to Google
+                    page.goto("https://www.google.com")
+                    page.wait_for_load_state("networkidle")
+                    
+                    # Search for "nice things to eat"
+                    # Try to find the search box - Google has different selectors
+                    search_box = page.locator('textarea[name="q"], input[name="q"]').first
+                    search_box.fill("nice things to eat")
+                    search_box.press("Enter")
+                    
+                    # Wait for results to load
+                    page.wait_for_load_state("networkidle")
+                    
+                    # Take a screenshot for verification
+                    page.screenshot(path="/tmp/google_search_results.png")
+                    
+                    # Keep browser open for a moment
+                    page.wait_for_timeout(3000)
+                    
+                    browser.close()
             
-            # Execute the script
-            subprocess.Popen(['python', '/tmp/google_search.py'])
+            # Run the search in a separate process to avoid blocking
+            import threading
+            search_thread = threading.Thread(target=search_google)
+            search_thread.start()
             
             dispatcher.utter_message(text="Opening Google and searching for nice things to eat...")
             
+        except ImportError:
+            dispatcher.utter_message(text="Playwright is not installed. Please install it with: pip install playwright && playwright install chromium")
         except Exception as e:
-            dispatcher.utter_message(text=f"An error occurred: {str(e)}")
+            dispatcher.utter_message(text=f"An error occurred while searching: {str(e)}")
         
         return []
 
